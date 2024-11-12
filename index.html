@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive US Map</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="map-container">
+            <!-- Map will be rendered here -->
+            <svg id="us-map" viewBox="0 0 975 610" preserveAspectRatio="xMidYMid meet"></svg>
+            <!-- Tooltip for state names on hover -->
+            <div class="state-hover-label"></div>
+        </div>
+        <div class="state-selector">
+            <h3>Select a state to see your price *</h3>
+            <select id="stateSelect">
+                <option value="US">United States</option>
+                <!-- Other states will be added via JavaScript -->
+            </select>
+            <div id="stateInfo" class="state-info">
+                <div class="selected-state-display">
+                    <svg id="state-shape" viewBox="0 0 975 610" preserveAspectRatio="xMidYMid meet"></svg>
+                </div>
+                <div class="state-name"></div>
+                <a href="#" class="service-link">See <span class="state-name-text"></span> Service of Process ›</a>
+                <div class="pricing-container">
+                    <div class="price-box">
+                        <h4>Standard</h4>
+                        <div class="price">$95</div>
+                        <button class="order-btn">Place Order > </button>
+                    </div>
+                    <div class="price-box">
+                        <h4>Rush</h4>
+                        <div class="price">$160</div>
+                        <button class="order-btn">Place Order > </button>
+                    </div>
+                </div>
+                <p class="price-note">Final price available during checkout. Pricing is per party, per address, per document. Additional fees may apply.</p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
