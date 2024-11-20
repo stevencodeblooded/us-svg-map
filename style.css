@@ -29,7 +29,7 @@ body {
 #us-map {
     width: 100%;
     height: 100%;
-    min-height: 500px;
+    /* min-height: 500px; */
     display: block;
 }
 
@@ -112,24 +112,38 @@ body {
 
 .state-name {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 700;
     text-align: center;
     color: #333;
 }
 
 .service-link {
-    color: #2d6986;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    font-weight: 600;
-    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-block: 4px;
+    transition: transform 0.3s ease;
     font-size: 18px;
+    font-weight: 600;
+    color: #2d6986;
+    text-decoration: none;
 }
 
-.service-link:hover {
-    text-decoration: underline;
+.service-link .state-name-text {
+    display: inline-block; /* Ensures the letter-spacing or margin change only affects this part */
+    margin-inline: 3px;
 }
+
+.service-link::after {
+    content: ' ›';
+    margin-left: 8px; /* Initial gap between the sentence and the arrow */
+    transition: margin-left 0.3s ease; /* Smooth transition for the arrow */
+}
+
+.service-link:hover::after {
+    margin-left: 16px; /* Increase the gap when hovered */
+}
+
 
 .pricing-container {
     display: flex;
@@ -143,26 +157,30 @@ body {
     border-radius: 8px;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    overflow: hidden; /* For the header background */
+    overflow: hidden; 
 }
 
 .price-box h4 {
-    background: #76c043; /* Green background */
+    background: #76c043; 
     color: white;
     margin: 0;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: 500;
+    padding: 8px;
+    font-size: 18px;
+    font-weight: 700;
     text-align: center;
 }
 
 .price {
     font-size: 20px;
     color: #333;
-    margin: 16px 0;
+    margin: 10px 0;
     text-align: center;
-    font-weight: 600;
+    font-weight: 700;
     color: #76c043;
+}
+
+.price-box:hover {
+    transform: translateY(-8px);
 }
 
 .order-btn {
@@ -176,6 +194,30 @@ body {
     width: 100%;
     text-align: center;
     margin-bottom: 16px;
+}
+
+.price-box {
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.price-box:hover .order-btn::after {
+    margin-left: 15px; /* Increases gap for the arrow on hover */
+    transition: margin-left 0.3s ease; /* Smooth transition for the arrow */
+}
+
+.order-btn {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    justify-content: center;
+    white-space: nowrap; /* Prevents text from breaking into a new line */
+}
+
+.order-btn::after {
+    content: '>';
+    margin-left: 5px; /* Initial gap between the text and the arrow */
+    transition: margin-left 0.3s ease; /* Smooth transition for the arrow */
 }
 
 .price-note {
