@@ -1,3 +1,58 @@
+const statePricing = {
+    "US": { standard: 95, rush: 160 },   // Default pricing
+    "01": { standard: 85, rush: 150 },   // Alabama
+    "02": { standard: 120, rush: 185 },  // Alaska
+    "04": { standard: 90, rush: 155 },   // Arizona
+    "05": { standard: 85, rush: 150 },   // Arkansas
+    "06": { standard: 110, rush: 175 },  // California
+    "08": { standard: 95, rush: 160 },   // Colorado
+    "09": { standard: 100, rush: 165 },  // Connecticut
+    "10": { standard: 90, rush: 155 },   // Delaware
+    "11": { standard: 95, rush: 160 },   // District of Columbia
+    "12": { standard: 95, rush: 160 },   // Florida
+    "13": { standard: 90, rush: 155 },   // Georgia
+    "15": { standard: 125, rush: 190 },  // Hawaii
+    "16": { standard: 90, rush: 155 },   // Idaho
+    "17": { standard: 95, rush: 160 },   // Illinois
+    "18": { standard: 90, rush: 155 },   // Indiana
+    "19": { standard: 85, rush: 150 },   // Iowa
+    "20": { standard: 85, rush: 150 },   // Kansas
+    "21": { standard: 85, rush: 150 },   // Kentucky
+    "22": { standard: 90, rush: 155 },   // Louisiana
+    "23": { standard: 95, rush: 160 },   // Maine
+    "24": { standard: 95, rush: 160 },   // Maryland
+    "25": { standard: 100, rush: 165 },  // Massachusetts
+    "26": { standard: 95, rush: 160 },   // Michigan
+    "27": { standard: 90, rush: 155 },   // Minnesota
+    "28": { standard: 85, rush: 150 },   // Mississippi
+    "29": { standard: 85, rush: 150 },   // Missouri
+    "30": { standard: 90, rush: 155 },   // Montana
+    "31": { standard: 85, rush: 150 },   // Nebraska
+    "32": { standard: 95, rush: 160 },   // Nevada
+    "33": { standard: 95, rush: 160 },   // New Hampshire
+    "34": { standard: 100, rush: 165 },  // New Jersey
+    "35": { standard: 90, rush: 155 },   // New Mexico
+    "36": { standard: 105, rush: 170 },  // New York
+    "37": { standard: 90, rush: 155 },   // North Carolina
+    "38": { standard: 85, rush: 150 },   // North Dakota
+    "39": { standard: 90, rush: 155 },   // Ohio
+    "40": { standard: 85, rush: 150 },   // Oklahoma
+    "41": { standard: 95, rush: 160 },   // Oregon
+    "42": { standard: 95, rush: 160 },   // Pennsylvania
+    "44": { standard: 95, rush: 160 },   // Rhode Island
+    "45": { standard: 85, rush: 150 },   // South Carolina
+    "46": { standard: 85, rush: 150 },   // South Dakota
+    "47": { standard: 85, rush: 150 },   // Tennessee
+    "48": { standard: 95, rush: 160 },   // Texas
+    "49": { standard: 90, rush: 155 },   // Utah
+    "50": { standard: 95, rush: 160 },   // Vermont
+    "51": { standard: 95, rush: 160 },   // Virginia
+    "53": { standard: 100, rush: 165 },  // Washington
+    "54": { standard: 85, rush: 150 },   // West Virginia
+    "55": { standard: 90, rush: 155 },   // Wisconsin
+    "56": { standard: 85, rush: 150 }    // Wyoming
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     let usStates;
     let geoPath;
@@ -198,6 +253,19 @@ document.addEventListener('DOMContentLoaded', function() {
         tooltip.style.display = 'none';
     }
 
+    function getPriceRanges(statePricing) {
+        const prices = Object.values(statePricing).filter(price => price); // Filter out any undefined/null
+        const standardPrices = prices.map(p => p.standard);
+        const minStandard = Math.min(...standardPrices);
+        const maxStandard = Math.max(...standardPrices);
+        const rushDiff = 65; // Consistent $65 difference for rush pricing
+    
+        return {
+            standardRange: `$${minStandard}-${maxStandard}`,
+            rushDiff: `+$${rushDiff}`
+        };
+    }
+
     function updateStateInfo(stateId) {
         try {
             const stateInfo = document.getElementById('stateInfo');
@@ -212,6 +280,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update text content
             stateInfo.querySelector('.state-name').textContent = stateName;
             stateInfo.querySelector('.state-name-text').textContent = stateName;
+            
+            // Update pricing based on whether US or state is selected
+            if (stateId === 'US') {
+                const ranges = getPriceRanges(statePricing);
+                stateInfo.querySelector('.price-box:nth-child(1) .price').textContent = ranges.standardRange;
+                stateInfo.querySelector('.price-box:nth-child(2) .price').textContent = ranges.rushDiff;
+            } else {
+                const pricing = statePricing[stateId];
+                stateInfo.querySelector('.price-box:nth-child(1) .price').textContent = `$${pricing.standard}`;
+                stateInfo.querySelector('.price-box:nth-child(2) .price').textContent = `$${pricing.rush}`;
+            }
             
             // Show state info
             stateInfo.classList.add('visible');
@@ -229,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showError('Error updating state information. Please refresh the page.');
         }
     }
-
+    
     function updateStateShape(stateId) {
         try {
             const stateShapeSvg = d3.select('#state-shape');
@@ -348,4 +427,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize map
     initializeMap();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const select = document.getElementById('stateSelect');
+
+    // Change arrow on focus
+    select.addEventListener('mousedown', function() {
+        this.style.backgroundImage = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='18 15 12 9 6 15'%3E%3C/polyline%3E%3C/svg%3E\")";
+    });
+
+    // Change arrow back on selection or blur
+    select.addEventListener('change', function() {
+        this.style.backgroundImage = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E\")";
+    });
+
+    select.addEventListener('blur', function() {
+        this.style.backgroundImage = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E\")";
+    });
 });

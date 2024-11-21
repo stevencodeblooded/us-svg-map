@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* background-color: #49C798; */
 }
 
 body {
@@ -29,7 +30,6 @@ body {
 #us-map {
     width: 100%;
     height: 100%;
-    /* min-height: 500px; */
     display: block;
 }
 
@@ -43,7 +43,7 @@ body {
 
 .state:hover, 
 .state.active {
-    fill: #76c043;
+    fill: #49C798;
 }
 
 .state-hover-label {
@@ -105,7 +105,8 @@ body {
 }
 
 #state-shape path {
-    fill: #76c043;
+    /* fill: #76c043; */
+    fill: #49C798;
     stroke: none;
     stroke-width: 0.5;
 }
@@ -161,7 +162,7 @@ body {
 }
 
 .price-box h4 {
-    background: #76c043; 
+    background: #49C798; 
     color: white;
     margin: 0;
     padding: 8px;
@@ -176,7 +177,7 @@ body {
     margin: 10px 0;
     text-align: center;
     font-weight: 700;
-    color: #76c043;
+    color: #49C798;
 }
 
 .price-box:hover {
@@ -274,12 +275,12 @@ body {
 }
 
 .state-map {
-    fill: #76c043;
+    fill: #49C798;
     transition: fill 0.3s ease;
 }
 
 #state-shape path.state-map {
-    fill: #76c043;
+    fill: #49C798;
     stroke: none;
 }
 
@@ -295,4 +296,48 @@ body {
     .state-selector {
         width: 100%;
     }
+}
+
+#stateSelect {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: white;
+    font-size: 14px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+    border: 1px solid #49C798;
+    transition: background-image 0.2s ease;
+}
+
+#stateSelect option:hover,
+#stateSelect option:focus,
+#stateSelect option:checked {
+    background-color: #49C798 !important;
+    color: white !important;
+}
+
+#stateSelect:focus {
+    border: none;
+    outline: none;
+    border: 1px solid #49C798;
+}
+
+#stateSelect:hover {
+    background-color: #f8fafc;
+}
+
+#stateSelect option {
+    padding: 8px 12px;
+    font-size: 14px;
+    position: relative;
+}
+
+#stateSelect option:checked {
+    background-color: #f0fdf4;
+    color: inherit;
 }
