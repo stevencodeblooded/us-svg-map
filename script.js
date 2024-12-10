@@ -1,6 +1,6 @@
 const statePricing = {
-    "US": { standard: 95, rush: 160 },   // Default pricing
-    "01": { standard: 85, rush: 150 },   // Alabama
+    // "US": { standard: 95, rush: 160 },   // Default pricing
+    "01": { standard: 5, rush: 15 },   // Alabama
     "02": { standard: 120, rush: 185 },  // Alaska
     "04": { standard: 90, rush: 155 },   // Arizona
     "05": { standard: 85, rush: 150 },   // Arkansas
@@ -254,15 +254,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function getPriceRanges(statePricing) {
-        const prices = Object.values(statePricing).filter(price => price); // Filter out any undefined/null
+        const prices = Object.values(statePricing).filter(price => price);
         const standardPrices = prices.map(p => p.standard);
+        const rushPrices = prices.map(p => p.rush);
+        
         const minStandard = Math.min(...standardPrices);
-        const maxStandard = Math.max(...standardPrices);
-        const rushDiff = 65; // Consistent $65 difference for rush pricing
-    
+        const minRush = Math.min(...rushPrices);
+        
         return {
-            standardRange: `$${minStandard}-${maxStandard}`,
-            rushDiff: `+$${rushDiff}`
+            standardPrice: `$${minStandard}`,
+            rushPrice: `$${minRush}`
         };
     }
 
@@ -281,16 +282,40 @@ document.addEventListener('DOMContentLoaded', function() {
             stateInfo.querySelector('.state-name').textContent = stateName;
             stateInfo.querySelector('.state-name-text').textContent = stateName;
             
+            // Update service link URL
+            const serviceLink = stateInfo.querySelector('.service-link');
+            if (stateId !== 'US') {
+                const stateNameForUrl = stateName.toLowerCase().replace(/\s+/g, '-');
+                serviceLink.href = `service/${stateNameForUrl}-process-service`;
+            } else {
+                serviceLink.href = 'service/process-service';
+            }
+            
             // Update pricing based on whether US or state is selected
             if (stateId === 'US') {
-                const ranges = getPriceRanges(statePricing);
-                stateInfo.querySelector('.price-box:nth-child(1) .price').textContent = ranges.standardRange;
-                stateInfo.querySelector('.price-box:nth-child(2) .price').textContent = ranges.rushDiff;
+                const prices = getPriceRanges(statePricing);
+                stateInfo.querySelector('.price-box:nth-child(1) .price').textContent = prices.standardPrice;
+                stateInfo.querySelector('.price-box:nth-child(2) .price').textContent = prices.rushPrice;
             } else {
                 const pricing = statePricing[stateId];
                 stateInfo.querySelector('.price-box:nth-child(1) .price').textContent = `$${pricing.standard}`;
                 stateInfo.querySelector('.price-box:nth-child(2) .price').textContent = `$${pricing.rush}`;
             }
+    
+            // Update order buttons
+            const standardBtn = stateInfo.querySelector('.price-box:nth-child(1) .order-btn');
+            const rushBtn = stateInfo.querySelector('.price-box:nth-child(2) .order-btn');
+            
+            // Update button click handlers
+            standardBtn.onclick = (e) => {
+                e.preventDefault();
+                window.location.href = 'https://byn.sopstatus.com/forms/?code=bynonlineorder';
+            };
+            
+            rushBtn.onclick = (e) => {
+                e.preventDefault();
+                window.location.href = 'https://byn.sopstatus.com/forms/?code=bynonlineorder';
+            };
             
             // Show state info
             stateInfo.classList.add('visible');
